@@ -20,36 +20,63 @@ set(${PROJECT_NAME}_CMAKE_PROJECT_VERSION_STRING 02.02.00)
 
 message(STATUS "\n\n  ==========================   ${PROJECT_NAME}   ==========================")
 
-# cetbuildtools contains our cmake modules
-find_package(cetbuildtools REQUIRED)
+option(STANDALONE_BUILD "If <ON> do not rely on cetbuildtools/UPS" OFF)
 
-include(CetCMakeEnv)
-cet_cmake_env()
+if(NOT STANDALONE_BUILD)
+  # cetbuildtools contains our cmake modules
+  find_package(cetbuildtools REQUIRED)
 
-set_install_root()
+  include(CetCMakeEnv)
+  cet_cmake_env()
 
-# The specification of the C++ standard is required because CET macros
-# set it to C++98 by default, and then override it depending on the
-# compiler version, as determined by the compiler qualifier.
-# Removing that qualifier, we need to supply that information manually,
-# and maintain it too.
-cet_set_compiler_flags(DIAGS CAUTIOUS
-  WERROR
-  NO_UNDEFINED
-  ALLOW_DEPRECATIONS
-  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template -I $ENV{CLANG_FQ_DIR}/include/c++/v1
-)
+  set_install_root()
 
-cet_report_compiler_flags()
+  # The specification of the C++ standard is required because CET macros
+  # set it to C++98 by default, and then override it depending on the
+  # compiler version, as determined by the compiler qualifier.
+  # Removing that qualifier, we need to supply that information manually,
+  # and maintain it too.
+  cet_set_compiler_flags(DIAGS CAUTIOUS
+    WERROR
+    NO_UNDEFINED
+    ALLOW_DEPRECATIONS
+    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template -I $ENV{CLANG_FQ_DIR}/include/c++/v1
+  )
 
-# these are minimum required versions, not the actual product versions
-find_ups_root(v6_00_00)
-find_ups_product( cetbuildtools )
+  cet_report_compiler_flags()
 
-include(BuildDictionary)
+  # these are minimum required versions, not the actual product versions
+  find_ups_root(v6_00_00)
+  find_ups_product( cetbuildtools )
+
+  include(BuildDictionary)
+else()
+  LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/Modules)
+  include(CPM)
+
+  CPMAddPackage(
+    NAME CMakeModules
+    GIT_TAG v0.2.2
+    GITHUB_REPOSITORY NuHepMC/CMakeModules
+    DOWNLOAD_ONLY
+  )
+  include(${CMakeModules_SOURCE_DIR}/NuHepMCModules.cmake)
+
+  CPMAddPackage(
+    NAME SRProxy
+    GIT_TAG master
+    GITHUB_REPOSITORY luketpickering/SRProxy
+  )
+  include(${SRProxy_SOURCE_DIR}/cmake/Modules/GenSRProxy.cmake)
+
+  include(ROOT)
+
+endif()
 
 add_subdirectory(duneanaobj)
-add_subdirectory(ups)
 
-# packaging utility
-include(UseCPack)
+if(NOT STANDALONE_BUILD)
+  add_subdirectory(ups)
+  # packaging utility
+  include(UseCPack)
+endif()
