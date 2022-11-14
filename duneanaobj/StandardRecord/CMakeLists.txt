@@ -24,7 +24,7 @@ if(NOT STANDALONE_BUILD)
   install_source()
 else()
 
-  include_directories(${CMAKE_SOURCE_DIR}/../../)
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../)
 
   ROOT_GENERATE_DICTIONARY(StandardRecordDict StandardRecord.h
     LINKDEF classes_def.xml)
