@@ -42,8 +42,9 @@ else()
     OUTPUT_NAME SRProxy
     TARGETNAME caf::StandardRecord
     EPILOG_FWD ${CMAKE_CURRENT_SOURCE_DIR}/EpilogFwd.h
-    INCLUDE_DIRS ${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS}
-    DEPENDENCIES ${SR_HEADER_FILES})
+    INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../ ${ROOT_INCLUDE_DIRS}
+    DEPENDENCIES ${SR_HEADER_FILES}
+    VERBOSE)
 
   add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx)
   target_link_libraries(duneanaobj_StandardRecordProxy PUBLIC SRProxy_BasicTypes)
