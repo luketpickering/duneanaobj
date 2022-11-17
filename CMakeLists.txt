@@ -86,6 +86,9 @@ endif()
 
 add_subdirectory(duneanaobj)
 
+add_library(duneanaobj INTERFACE)
+target_link_libraries(duneanaobj INTERFACE duneanaobj_StandardRecordProxy duneanaobj_StandardRecord)
+
 if(NOT STANDALONE_BUILD)
   add_subdirectory(ups)
   # packaging utility

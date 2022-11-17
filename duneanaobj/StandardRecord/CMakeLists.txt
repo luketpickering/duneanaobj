@@ -67,8 +67,15 @@ else()
 
   add_library(duneanaobj_StandardRecord SHARED ${SR_IMPL_FILES})
   target_link_libraries(duneanaobj_StandardRecord PUBLIC ROOT::ROOT)
-  target_include_directories(duneanaobj_StandardRecord PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
-  install(TARGETS duneanaobj_StandardRecord DESTINATION lib)
+  target_include_directories(duneanaobj_StandardRecord PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include>)
+  set_target_properties(duneanaobj_StandardRecord PROPERTIES PUBLIC_HEADER "${SR_HEADER_FILES}")
+
+  install(TARGETS duneanaobj_StandardRecord 
+    DESTINATION lib 
+    PUBLIC_HEADER DESTINATION include/duneanaobj/StandardRecord)
   install(FILES 
       ${CMAKE_CURRENT_BINARY_DIR}/libStandardRecordDict_rdict.pcm 
       ${CMAKE_CURRENT_BINARY_DIR}/libStandardRecordDict.rootmap 
