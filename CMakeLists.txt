@@ -62,12 +62,14 @@ else()
   )
   include(${CMakeModules_SOURCE_DIR}/NuHepMCModules.cmake)
 
-  CPMAddPackage(
+  CPMFindPackage(
     NAME SRProxy
-    GIT_TAG master
+    GIT_TAG feature/Clingification
     GITHUB_REPOSITORY luketpickering/SRProxy
   )
-  include(${SRProxy_SOURCE_DIR}/cmake/Modules/GenSRProxy.cmake)
+  if(NOT COMMAND GenSRProxy)
+    include(${SRProxy_SOURCE_DIR}/cmake/Modules/GenSRProxy.cmake)
+  endif()
 
   include(ROOT)
 
