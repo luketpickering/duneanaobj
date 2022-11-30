@@ -47,7 +47,7 @@ else()
     VERBOSE)
 
   add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx)
-  target_link_libraries(duneanaobj_StandardRecordProxy PUBLIC SRProxy_BasicTypes)
+  target_link_libraries(duneanaobj_StandardRecordProxy PUBLIC SRProxy::BasicTypes)
 
   target_include_directories(duneanaobj_StandardRecordProxy PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
