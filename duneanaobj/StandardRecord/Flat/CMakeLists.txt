@@ -16,4 +16,25 @@ if(NOT STANDALONE_BUILD)
 
   install_headers(EXTRAS $ENV{MRB_BUILDDIR}/duneanaobj/duneanaobj/StandardRecord/Flat/FlatRecord.h $ENV{MRB_BUILDDIR}/duneanaobj/duneanaobj/StandardRecord/Flat/FwdDeclare.h)
 else()
+  GenSRProxy(
+    FLAT
+    HEADER duneanaobj/StandardRecord/StandardRecord.h
+    OUTPUT_NAME SRFlat
+    TARGETNAME caf::StandardRecord
+    INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../ ${ROOT_INCLUDE_DIRS}
+    DEPENDENCIES ${SR_HEADER_FILES}
+    VERBOSE)
+
+  add_library(duneanaobj_StandardRecordFlat SHARED SRFlat.cxx)
+  target_link_libraries(duneanaobj_StandardRecordFlat PUBLIC SRProxy::FlatTypes)
+
+  target_include_directories(duneanaobj_StandardRecordFlat PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
+    $<INSTALL_INTERFACE:include>)
+
+  install(TARGETS duneanaobj_StandardRecordFlat DESTINATION lib)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/SRFlat.h 
+                ${CMAKE_CURRENT_BINARY_DIR}/FwdDeclare.h 
+          DESTINATION include/duneanaobj/StandardRecord/Flat)
+
 endif()
