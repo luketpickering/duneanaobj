@@ -1,6 +1,3 @@
-add_subdirectory(Proxy)
-add_subdirectory(Flat)
-
 if(NOT STANDALONE_BUILD)
   # for classes_def.xml!!
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -39,7 +36,7 @@ else()
     SRWeightGlobal.cxx
     ${CMAKE_CURRENT_BINARY_DIR}/StandardRecordDict.cxx)
 
-  SET(SR_HEADER_FILES
+  SET(SR_HEADER_FILES_REL
     SRGAr.h
     SRGlobal.h
     SRLorentzVector.h
@@ -55,19 +52,32 @@ else()
     SRWeightGlobal.h
     StandardRecord.h)
 
+  set(SR_HEADER_FILES)
+  foreach(HDR ${SR_HEADER_FILES_REL})
+    list(APPEND SR_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/${HDR})
+  endforeach()
+
   add_library(duneanaobj_StandardRecord SHARED ${SR_IMPL_FILES})
-  target_link_libraries(duneanaobj_StandardRecord PUBLIC ROOT::ROOT)
+  target_link_libraries(duneanaobj_StandardRecord PUBLIC ROOT::Core)
   target_include_directories(duneanaobj_StandardRecord PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>)
-  set_target_properties(duneanaobj_StandardRecord PROPERTIES PUBLIC_HEADER "${SR_HEADER_FILES}")
+  set_target_properties(duneanaobj_StandardRecord PROPERTIES 
+    PUBLIC_HEADER "${SR_HEADER_FILES_REL}" 
+    EXPORT_NAME duneanaobj::StandardRecord)
 
-  install(TARGETS duneanaobj_StandardRecord 
-    DESTINATION lib 
+  add_library(duneanaobj::StandardRecord ALIAS duneanaobj_StandardRecord)
+
+  install(TARGETS duneanaobj_StandardRecord
+    EXPORT duneanaobjTargets
+    DESTINATION lib
     PUBLIC_HEADER DESTINATION include/duneanaobj/StandardRecord)
   install(FILES 
-      ${CMAKE_CURRENT_BINARY_DIR}/libStandardRecordDict_rdict.pcm 
-      ${CMAKE_CURRENT_BINARY_DIR}/libStandardRecordDict.rootmap 
+      ${CMAKE_CURRENT_BINARY_DIR}/StandardRecordDict.rootmap 
+      ${CMAKE_CURRENT_BINARY_DIR}/StandardRecordDict_rdict.pcm
     DESTINATION lib)
 endif()
+
+add_subdirectory(Flat)
+add_subdirectory(Proxy)
