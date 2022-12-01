@@ -47,13 +47,14 @@ else()
     VERBOSE)
 
   add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx)
-  target_link_libraries(duneanaobj_StandardRecordProxy PUBLIC SRProxy::BasicTypes)
+  target_link_libraries(duneanaobj_StandardRecordProxy 
+    PUBLIC duneanaobj::StandardRecord SRProxy::BasicTypes)
 
-  target_include_directories(duneanaobj_StandardRecordProxy PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
-    $<INSTALL_INTERFACE:include>)
+  set_target_properties(duneanaobj_StandardRecordProxy PROPERTIES 
+    EXPORT_NAME duneanaobj::StandardRecordProxy)
+  add_library(duneanaobj::StandardRecordProxy ALIAS duneanaobj_StandardRecordProxy)
 
-  install(TARGETS duneanaobj_StandardRecordProxy DESTINATION lib)
+  install(TARGETS duneanaobj_StandardRecordProxy EXPORT duneanaobjTargets DESTINATION lib)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/SRProxy.h 
                 ${CMAKE_CURRENT_BINARY_DIR}/FwdDeclare.h 
           DESTINATION include/duneanaobj/StandardRecord/Proxy)
