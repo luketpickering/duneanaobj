@@ -1,5 +1,5 @@
 add_subdirectory(Proxy)
-# add_subdirectory(Flat)
+add_subdirectory(Flat)
 
 if(NOT STANDALONE_BUILD)
   # for classes_def.xml!!
