@@ -37,7 +37,6 @@ namespace caf
 
       void SetXYZ(float x, float y, float z);
 
-#if !defined(__GCCXML__) && !defined(__castxml__)
       /// Easy conversion back to TVector3
       operator TVector3() const;
 
@@ -64,7 +63,6 @@ namespace caf
       // a few more of them...
       SRVector3D operator+(const SRVector3D & other) const { return SRVector3D(x + other.x, y + other.y, z + other.z); }
       SRVector3D operator-(const SRVector3D & other) const {return SRVector3D(x - other.x, y - other.y, z - other.z); }
-#endif
 
       // -----------------------------
 
@@ -75,9 +73,7 @@ namespace caf
 
 }
 
-#if !defined(__GCCXML__) && !defined(__castxml__)
 // make writing these out easier
 std::ostream & operator<<(std::ostream & stream, const caf::SRVector3D & vec);
-#endif
 
 #endif //DUNEANAOBJ_SRVECTOR3D_H

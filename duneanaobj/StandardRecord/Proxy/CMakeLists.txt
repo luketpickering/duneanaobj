@@ -37,7 +37,10 @@ else()
 
   add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx)
   target_link_libraries(duneanaobj_StandardRecordProxy 
-    PUBLIC duneanaobj::StandardRecord SRProxy::BasicTypes)
+    PUBLIC -Wl,--no-as-needed duneanaobj::StandardRecord -Wl,--as-needed SRProxy::BasicTypes)
+  target_include_directories(duneanaobj_StandardRecordProxy PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> 
+    $<INSTALL_INTERFACE:include>)
 
   set_target_properties(duneanaobj_StandardRecordProxy PROPERTIES 
     EXPORT_NAME duneanaobj::StandardRecordProxy)

@@ -27,7 +27,7 @@ else()
 
   add_library(duneanaobj_StandardRecordFlat SHARED SRFlat.cxx)
   target_link_libraries(duneanaobj_StandardRecordFlat 
-    PUBLIC duneanaobj::StandardRecord SRProxy::FlatTypes)
+    PUBLIC -Wl,--no-as-needed duneanaobj::StandardRecord -Wl,--as-needed SRProxy::FlatTypes)
 
   set_target_properties(duneanaobj_StandardRecordFlat PROPERTIES EXPORT_NAME duneanaobj::StandardRecordFlat)
   add_library(duneanaobj::StandardRecordFlat ALIAS duneanaobj_StandardRecordFlat)

@@ -28,6 +28,9 @@ namespace caf
     StandardRecord();
     ~StandardRecord();
 
+    std::string duneanaobj_gitshorthash;
+    unsigned short duneanaobj_version[3];
+
     // Metadata
     int meta_run;
     int meta_subrun;
