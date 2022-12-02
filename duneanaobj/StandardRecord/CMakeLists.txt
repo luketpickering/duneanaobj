@@ -1,9 +1,21 @@
+execute_process(COMMAND git rev-parse --short=8 HEAD
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} 
+  OUTPUT_VARIABLE DUNEANAOBJ_GITSHORTHASH8
+  RESULT_VARIABLE GIT_CMD_SUCCESS
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(NOT GIT_CMD_SUCCESS EQUAL 0)
+  message(FATAL_ERROR "Failed to run git rev-parse --short=8 HEAD in ${CMAKE_SOURCE_DIR}")
+endif()
+
+configure_file(StandardRecord.cxx.in ${CMAKE_CURRENT_BINARY_DIR}/StandardRecord.cxx @ONLY)
+
 if(NOT STANDALONE_BUILD)
   # for classes_def.xml!!
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
   set( PACKAGE duneanaobj_StandardRecord )
-  FILE( GLOB src_files *.cxx )
+  FILE( GLOB src_files *.cxx ${CMAKE_CURRENT_BINARY_DIR}/StandardRecord.cxx )
 
   # For this directory only, pedantic option to catch uninitialized SR fields
   # add_compile_options(-Weffc++)
@@ -40,7 +52,7 @@ else()
     SRGlobal.cxx
     SRSystParamHeader.cxx
     SRVector3D.cxx
-    StandardRecord.cxx
+    ${CMAKE_CURRENT_BINARY_DIR}/StandardRecord.cxx
     SRLorentzVector.cxx
     SRTrack.cxx
     SRWeightGlobal.cxx
@@ -68,7 +80,7 @@ else()
   endforeach()
 
   add_library(duneanaobj_StandardRecord SHARED ${SR_IMPL_FILES})
-  target_link_libraries(duneanaobj_StandardRecord PUBLIC ROOT::Core)
+  target_link_libraries(duneanaobj_StandardRecord PUBLIC ROOT::Physics ROOT::Core)
   target_include_directories(duneanaobj_StandardRecord PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

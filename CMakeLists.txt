@@ -15,12 +15,17 @@
 
 cmake_minimum_required (VERSION 3.12...3.18 FATAL_ERROR)
 
-project(duneanaobj LANGUAGES CXX VERSION 03.01.00)
-set(${PROJECT_NAME}_CMAKE_PROJECT_VERSION_STRING {PROJECT_VERSION})
+set(DUNEANAOBJ_VERSION_MAJOR 02)
+set(DUNEANAOBJ_VERSION_MINOR 02)
+set(DUNEANAOBJ_VERSION_PATCH 00)
+
+project(duneanaobj LANGUAGES CXX VERSION ${DUNEANAOBJ_VERSION_MAJOR}.${DUNEANAOBJ_VERSION_MINOR}.${DUNEANAOBJ_VERSION_PATCH})
+set(${PROJECT_NAME}_CMAKE_PROJECT_VERSION_STRING ${PROJECT_VERSION})
 
 message(STATUS "\n\n  ==========================   ${PROJECT_NAME}   ==========================")
 
-option(STANDALONE_BUILD "If <ON> do not rely on cetbuildtools/UPS" ON)
+option(STANDALONE_BUILD "If <ON> do not rely on cetbuildtools/UPS" OFF)
+option(TESTS_ENABLED "If <ON> build some test apps" OFF)
 
 if(NOT STANDALONE_BUILD)
 
@@ -89,6 +94,11 @@ else()
   install(TARGETS duneanaobj EXPORT duneanaobjTargets)
 
   add_library(duneanaobj::All ALIAS duneanaobj)
+
+  add_subdirectory(app)
+  if(TESTS_ENABLED)
+    add_subdirectory(test)
+  endif()
 
   include(CMakePackageConfigHelpers)
   write_basic_package_version_file(
