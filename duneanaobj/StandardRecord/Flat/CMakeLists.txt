@@ -23,6 +23,7 @@ else()
     TARGETNAME caf::StandardRecord
     INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../ ${ROOT_INCLUDE_DIRS}
     DEPENDENCIES ${SR_HEADER_FILES}
+    DEFINITIONS _Float16=short
     VERBOSE)
 
   add_library(duneanaobj_StandardRecordFlat SHARED SRFlat.cxx)
