@@ -35,6 +35,7 @@ else()
     HEADER duneanaobj/StandardRecord/StandardRecord.h
     OUTPUT_NAME SRFlat
     TARGETNAME caf::StandardRecord
+    PROLOG ${CMAKE_CURRENT_SOURCE_DIR}/Prolog.h
     INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../ ${ROOT_INCLUDE_DIRS}
     DEPENDENCIES ${SR_HEADER_FILES}
     DEFINITIONS _Float16=short
@@ -42,7 +43,7 @@ else()
 
   add_library(duneanaobj_StandardRecordFlat SHARED SRFlat.cxx)
   target_link_libraries(duneanaobj_StandardRecordFlat 
-    PUBLIC -Wl,--no-as-needed duneanaobj::StandardRecord -Wl,--as-needed SRProxy::FlatTypes)
+    PUBLIC duneanaobj::StandardRecord SRProxy::FlatTypes)
 
   set_target_properties(duneanaobj_StandardRecordFlat PROPERTIES EXPORT_NAME duneanaobj::StandardRecordFlat)
   add_library(duneanaobj::StandardRecordFlat ALIAS duneanaobj_StandardRecordFlat)

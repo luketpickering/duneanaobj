@@ -49,30 +49,60 @@ else()
     LINKDEF classes_def.xml)
 
   SET(SR_IMPL_FILES
+    SRFD.cxx
+    SRGArTrack.cxx
     SRGlobal.cxx
-    SRSystParamHeader.cxx
-    SRVector3D.cxx
-    ${CMAKE_CURRENT_BINARY_DIR}/StandardRecord.cxx
     SRLorentzVector.cxx
+    SRMINERvA.cxx
+    SRMeta.cxx
+    SRNDLAr.cxx
+    SRSystParamHeader.cxx
     SRTrack.cxx
+    SRTruthBranch.cxx
+    SRVector3D.cxx
     SRWeightGlobal.cxx
+    ${CMAKE_CURRENT_BINARY_DIR}/StandardRecord.cxx
     ${CMAKE_CURRENT_BINARY_DIR}/StandardRecordDict.cxx)
 
   SET(SR_HEADER_FILES_REL
+    SRBeamBranch.h
+    SRCVNScoreBranch.h
+    SRCommonRecoBranch.h
+    SRDetectorMetaBranch.h
+    SRDirectionBranch.h
+    SREnums.h
+    SRFD.h
+    SRFDBranch.h
     SRGAr.h
+    SRGArECAL.h
+    SRGArTrack.h
     SRGlobal.h
+    SRInteraction.h
+    SRInteractionBranch.h
     SRLorentzVector.h
+    SRMINERvA.h
+    SRMeta.h
+    SRNDAssnBranch.h
     SRNDBranch.h
     SRNDLAr.h
+    SRNDShowerAssn.h
     SRNDTrackAssn.h
-    SRParticleTruth.h
+    SRNeutrinoEnergyBranch.h
+    SRNeutrinoHypothesisBranch.h
+    SRRecoParticle.h
+    SRRecoParticlesBranch.h
+    SRSAND.h
     SRShower.h
     SRSystParamHeader.h
     SRTMS.h
     SRTrack.h
+    SRTrueInteraction.h
+    SRTrueParticle.h
+    SRTruthBranch.h
     SRVector3D.h
     SRWeightGlobal.h
-    StandardRecord.h)
+    StandardRecord.h
+    classes.h )
 
   set(SR_HEADER_FILES)
   foreach(HDR ${SR_HEADER_FILES_REL})

@@ -41,15 +41,16 @@ else()
     HEADER duneanaobj/StandardRecord/StandardRecord.h
     OUTPUT_NAME SRProxy
     TARGETNAME caf::StandardRecord
+    PROLOG ${CMAKE_CURRENT_SOURCE_DIR}/Prolog.h
     EPILOG_FWD ${CMAKE_CURRENT_SOURCE_DIR}/EpilogFwd.h
     INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../ ${ROOT_INCLUDE_DIRS}
     DEPENDENCIES ${SR_HEADER_FILES}
     DEFINITIONS _Float16=short
     VERBOSE)
 
-  add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx)
+  add_library(duneanaobj_StandardRecordProxy SHARED SRProxy.cxx Instantiations.cxx)
   target_link_libraries(duneanaobj_StandardRecordProxy 
-    PUBLIC -Wl,--no-as-needed duneanaobj::StandardRecord -Wl,--as-needed SRProxy::BasicTypes)
+    PUBLIC duneanaobj::StandardRecord SRProxy::BasicTypes)
   target_include_directories(duneanaobj_StandardRecordProxy PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> 
     $<INSTALL_INTERFACE:include>)

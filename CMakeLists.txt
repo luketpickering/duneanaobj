@@ -15,8 +15,8 @@
 
 cmake_minimum_required (VERSION 3.12...3.18 FATAL_ERROR)
 
-set(DUNEANAOBJ_VERSION_MAJOR 02)
-set(DUNEANAOBJ_VERSION_MINOR 02)
+set(DUNEANAOBJ_VERSION_MAJOR 03)
+set(DUNEANAOBJ_VERSION_MINOR 01)
 set(DUNEANAOBJ_VERSION_PATCH 00)
 
 project(duneanaobj LANGUAGES CXX VERSION ${DUNEANAOBJ_VERSION_MAJOR}.${DUNEANAOBJ_VERSION_MINOR}.${DUNEANAOBJ_VERSION_PATCH})
@@ -70,14 +70,17 @@ else()
   LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/Modules)
   include(CPM)
 
-  CPMFindPackage(
+  CPMAddPackage(
     NAME SRProxy
-    GIT_TAG feature/Clingification
+    GIT_TAG feature/Clingification_rebase2
     GITHUB_REPOSITORY luketpickering/SRProxy
   )
+
   if(NOT COMMAND GenSRProxy)
     include(${SRProxy_SOURCE_DIR}/cmake/Modules/GenSRProxy.cmake)
   endif()
+
+  find_package(ROOT 6 REQUIRED)
 endif()
 
 add_subdirectory(duneanaobj)
